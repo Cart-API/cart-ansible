@@ -17,8 +17,11 @@
       upstart_user: "{{deploy_user}}"
       upstart_group: "{{deploy_group}}"
       upstart_exec_path: "/usr/bin/node {{app_path}}/{{app_bin}}"
+      upstart_exec_flags: "chdir={{app_path}}"
+      upstart_environment_global: no 
       upstart_environment: 
         - {name: NODE_ENV, value: production} 
+        - {name: SERVER_PORT, value: {{http_port}}} 
     - role: geerlingguy.haproxy
       haproxy_backend_servers: 
         - name: "{{app_name}}"
