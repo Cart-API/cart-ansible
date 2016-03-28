@@ -21,7 +21,7 @@
       upstart_environment_global: no 
       upstart_environment: 
         - {name: NODE_ENV, value: production} 
-        - {name: SERVER_PORT, value: {{http_port}}} 
+        - {name: SERVER_PORT, value: "{{http_port}}"} 
     - role: geerlingguy.haproxy
       haproxy_backend_servers: 
         - name: "{{app_name}}"
