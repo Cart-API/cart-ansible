@@ -1,0 +1,26 @@
+- hosts: api 
+  remote_user: root
+  roles: 
+    - role: franklinkim.environment
+    - role: nodesource.node
+    - role: node
+    - role: telusdigital.upstart 
+      upstart_name: "{{app_name}}" 
+      upstart_start_on: 
+        - started networking 
+      upstart_stop_on:
+        - stopping networking 
+      upstart_respawn: yes
+      upstart_respawn_limit: yes
+      upstart_respawn_limit_count: 5
+      upstart_respawn_limit_interval: 20
+      upstart_user: "{{deploy_user}}"
+      upstart_group: "{{deploy_group}}"
+      upstart_exec_path: "/usr/bin/node {{app_path}}/{{app_bin}}"
+      upstart_environment: 
+        - {name: NODE_ENV, value: production} 
+    - role: geerlingguy.haproxy
+      haproxy_backend_servers: 
+        - name: "{{app_name}}"
+          address: "{{http_host}}:{{http_port}}"
+    - haproxy

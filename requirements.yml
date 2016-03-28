@@ -1,0 +1,5 @@
+- src: nodesource.node
+- src: ANXS.postgresql
+- src: geerlingguy.haproxy
+- src: telusdigital.upstart
+- src: franklinkim.environment
