@@ -5,15 +5,18 @@
     - role: nodesource.node
     - role: node
     - role: telusdigital.upstart 
-      upstart_name: "{{app_name}}" 
+      upstart_name: "{{app_name}}"
       upstart_start_on: 
-        - started networking 
+        - started networking
       upstart_stop_on:
-        - stopping networking 
+        - stopping networking
       upstart_respawn: yes
       upstart_respawn_limit: yes
       upstart_respawn_limit_count: 5
       upstart_respawn_limit_interval: 20
+      upstart_pre_start: no
+      upstart_post_stop: no
+      upstart_script: no
       upstart_user: "{{deploy_user}}"
       upstart_group: "{{deploy_group}}"
       upstart_exec_path: "/usr/bin/node {{app_path}}/{{app_bin}}"
@@ -21,10 +24,12 @@
         - "chdir={{app_path}}"
       upstart_environment_global: no 
       upstart_environment: 
-        - {name: NODE_ENV, value: production} 
-        - {name: SERVER_PORT, value: "{{http_port}}"} 
+        - {name: NODE_ENV, value: production}
+        - {name: SERVER_PORT, value: "{{http_port}}"}
+        - {name: SERVER_HOST, value: "{{http_host}}"}
     - role: geerlingguy.haproxy
       haproxy_backend_servers: 
         - name: "{{app_name}}"
           address: "{{http_host}}:{{http_port}}"
     - haproxy
+    - role: start

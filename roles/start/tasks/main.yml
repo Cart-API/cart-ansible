@@ -1,0 +1,2 @@
+- name: Restart service | {{app_name}}
+  command: service {{app_name}} restart
